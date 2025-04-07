@@ -41,3 +41,25 @@ gives
 [0, 2, 4, 6]
 [7, 6, 5, 4, 3, 2, 1, 0]
 ```
+
+## Question 3 - Factorial Calculator
+```python
+n = int(input())
+product = 1
+for i in range(n):
+    # from 0 to n - 1, thus, we have to add 1
+    product *= (i+1)
+
+print(product)
+```
+`product *= (i+1)` is a condense way to write `product = product * (i+1)`
+
+## Question 4 - Palindrome Checker
+```python
+a = input().lower()
+if (a == a[::-1]):
+    print("true")
+else:
+    print("false")
+```
+For a string `a`, `a.lower()` turns every letter in `a` to lower case.
