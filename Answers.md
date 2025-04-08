@@ -260,3 +260,129 @@ else:
 
 print(str(result)[1:-1])
 ```
+`%` is taking the mod of two numbers.
+
+## Question 11 - First Unique Character Finder
+```python
+string = input()
+found = False
+frequency = {}
+
+for c in string:
+    if c in frequency.keys():
+        frequency[c] += 1
+    else:
+        frequency[c] = 1
+
+for k in frequency.keys():
+    if (frequency[k] == 1):
+        print(k)
+        found = True
+        break
+if (not found):
+    print("Every character in the string appears at least twice.")
+```
+
+## Question 12 - Base Convertor
+```python
+ori_number = input()
+ori_base = int(input())
+tar_base = int(input())
+
+
+has_output = False
+
+let_to_num = {
+    "1": 1, "2": 2, "3": 3, "4": 4,
+    "5": 5, "6": 6, "7": 7, "8": 8,
+    "9": 9, "A": 10, "B": 11, "C": 12,
+    "D": 13, "E": 14, "F": 15, "0": 0}
+
+# No need for a dictionary since its index corresponds directly to the string
+num_to_let = ["0", "1", "2", "3", "4", "5", "6", "7", "8",
+             "9", "A", "B", "C", "D", "E", "F"]
+
+
+# Convert to decimal
+degree = 0
+dec_number = 0
+for i in range(len(ori_number)):
+    char = ori_number[-(i+1)] # get char from right to left
+    dec_number += let_to_num[char] * (ori_base ** degree)
+    degree += 1
+
+if (tar_base == 10):
+    print(dec_number)
+    has_output = True
+
+# Convert to target base
+tar_number = ""
+while dec_number > 0:
+    remainder = dec_number % tar_base
+    tar_number = num_to_let[remainder] + tar_number
+    dec_number //= tar_base # Floor division
+    
+if (not has_output):
+    print(tar_number)
+```
+`dec_number //= tar_base` means `dec_number = int(dec_number / tar_base)`.
+
+## Question 13 - Roman Numerals
+```python
+value = input()
+is_number_to_roman_numeral = value.isnumeric()
+
+# This is a hard question if you do not find the method
+# The translation from numbers to roman numerals can actually be done digit by digit
+# 
+# For instances,
+#   M | CCC | XC | VIII => 1000 + 300 + 90 + 8 = 1398
+#   1494 => 1000 + 400 + 90 + 4 => M | CD | XC | IV => MCDXCIV
+# More over, every digit follows the same pattern.
+# If X represents the ones, Y represents the fives, and Z represents the tens in the digit,
+# Then, 1 is X, 2 is XX, 3 is XXX, 4 is XY, 5 is Y, 6 is YX, 7 is YXX, 8 is YXXX, 9 is XZ, and we skip 0
+# 
+# Let's replace X, Y, Z by 0, 1, 2. We get the following list
+# If we call reference_table[4], we get "01" => and we can translate this to XY
+# This give us a convenient way to turn a digit to the right pattern.
+# All we need to do is replace the pattern by the right letters.
+reference_list = ["", "0", "00", "000", "01", "1", "10", "100", "1000", "02"]
+
+# Since the maximum number is 2000, we only need to deal with unit, 10th and 100th place
+letter_for_digits = [
+    ["M", "_", "_"], # 1000th
+    ["C", "D", "M"], # 100th
+    ["X", "L", "C"], # 10th
+    ["I", "V", "X"] # unit
+]
+
+val = {"M": 1000, "D": 500, "C": 100, "L": 50, "X": 10, "V": 5, "I": 1}
+
+result = ""
+if (is_number_to_roman_numeral):
+    for i in range(0, len(value)):
+        pattern = reference_list[int(value[i])] # get patterns, like "01"
+        for index in pattern: # convert pattern to a string
+            # based on the lenth of value, get the right list
+            # if len(value) is 4, we want from 0 (4 - 4) to 3 (i = 0, 1, 2, 3)
+            # if len(value) is 3, we want from 1 (4 - 3) to 3 (i = 0, 1, 2)
+            # if len(value) is 2, we want from 2 (4 - 2) to 3 (i = 0, 1)
+            # ...
+            # the pattern is (4 - len(value)) + i
+            right_list = letter_for_digits[(4-len(value)) + i]
+            result += right_list[int(index)] # from list get the right letters
+            
+else: # Roman numeral to numbers
+    # read from right to left
+    # if a the next number is smaller than the current number, make the next number negative
+    result = 0 # redefine result as number
+    current_digit = 0
+    for char in value[::-1]:
+        if (current_digit <= val[char]):
+            current_digit = val[char]
+            result += current_digit
+        else:
+            result -= val[char]
+
+print(result)
+```
