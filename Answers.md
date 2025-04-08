@@ -151,7 +151,7 @@ if (is_prime):
 ```
 
 ## Question 8 - Balanced Parentheses Checker
-```
+```python
 brackets = input()
 stack = []
 is_wrong = False
@@ -200,4 +200,63 @@ stack.append("a") # now "a" is pushed and it is on the top of the stack
 stack.append("b") # now "b" is pushed and it is on the top of the stack
 x = stack.pop() # now "b" is popped and the value "b" is removed from stack and is given to x
 # a is on the top of the stack
+```
+
+## Question 9 - Frequency Counter and Mode Finder
+```python
+arr = input().split(", ")
+arr = [int(c) for c in arr]
+arr = sorted(arr)
+map = {}
+
+for n in arr:
+    if n in map.keys():
+        map[n] += 1
+    else:
+        map[n] = 1
+
+max_keys = []
+max = 0
+
+for n in map.keys():
+    if map[n] > max:
+        max = map[n]
+        max_keys = [n]
+    elif map[n] == max:
+        max_keys.append(n)
+    else:
+        continue
+
+print(str(map)[1:-1])
+print(str(sorted(max_keys))[1:-1])
+```
+
+## Question 10 - Array Rotation
+```python
+arr = input().split(", ")
+arr = [int(c) for c in arr]
+shift = int(input())
+
+result = []
+
+shift = shift % len(arr)
+
+if (shift > 0):
+    for i in range(shift):
+        result.append(arr[-shift + i])
+    index = 0
+    while len(result) < len(arr):
+        result.append(arr[index])
+        index += 1
+elif (shift < 0):
+    for i in range(-shift, len(arr)):
+        result.append(arr[i])
+    index = 0
+    while len(result) < len(arr):
+        result.append(arr[index])
+        index += 1
+else:
+    result = arr
+
+print(str(result)[1:-1])
 ```
