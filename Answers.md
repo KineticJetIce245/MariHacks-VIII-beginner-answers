@@ -386,3 +386,166 @@ else: # Roman numeral to numbers
 
 print(result)
 ```
+
+## Question 14 - Merge Two Sorted Arrays
+```python
+arr1 = [int(c) for c in input().split(",")]
+arr2 = [int(c) for c in input().split(",")]
+final_arr = []
+
+while len(arr1) > 0 and len(arr2) > 0:
+    current_number = arr1.pop(0) if arr1[0] < arr2[0] else arr2.pop(0)
+    final_arr.append(current_number)
+
+if (len(arr1) == 0):
+    final_arr.extend(arr2)
+else:
+    final_arr.extend(arr1)
+
+print(str(final_arr)[1:-1])
+```
+
+## Question 15 - Missing Number Finder
+```python
+arr = [int(c) for c in input().split(", ")]
+arr = sorted(arr)
+
+has_output = False
+
+for i in range(len(arr)):
+    if not arr[i] == i:
+        print(i)
+        has_output = True
+        break
+
+if not has_output:
+    print(len(arr))
+```
+
+## Question 16 - Maximum Subarray Sum
+```python
+arr = [int(c) for c in input().split(", ")]
+max_sum = arr[0]
+best_subarr = [arr[0]]
+
+for size_of_subarr in range(1, len(arr) + 1):
+    for start_index in range(0, len(arr) + 1 - size_of_subarr):
+        sub_arr = arr[start_index: start_index + size_of_subarr]
+        current_sum = sum(sub_arr)
+        if (max_sum < current_sum):
+            max_sum = current_sum
+            best_subarr = sub_arr
+
+print(str(best_subarr)[1:-1])
+print(max_sum)
+```
+
+## Question 17 - Merge Interval
+```python
+number_of_intervals = int(input())
+intervals = {}
+
+for i in range(number_of_intervals):
+    interval = [int(c) for c in input().split(" ")]
+    start = interval[0]
+    end = interval[1]
+    # Use a dictionary and store start point of an interval as the key
+    # and the end point as a value
+    # Since a start point can be associated with multiple end points,
+    # For example, the intervals look like this:
+    # 2 7
+    # 2 3
+    # I choose to use a list to store the end points
+    if start in intervals.keys():
+        intervals[start].append(end)
+    else:
+        # if no list, add a new one
+        intervals[start] = [end]
+        
+sorted_start_points = sorted(list(intervals.keys()))
+
+sorted_intervals = []
+# first start point
+current_start_point = sorted_start_points[0]
+# the maximum end point of the first start point
+current_end_point = max(intervals[sorted_start_points[0]])
+for this_start_point in sorted_start_points:
+    if current_end_point < this_start_point:
+        # Two intervals
+        sorted_intervals.append([current_start_point, current_end_point])
+        current_start_point = this_start_point
+        current_end_point = max(intervals[this_start_point])
+    else:
+        # Merge the intervals
+        current_end_point = max(max(intervals[this_start_point]), current_end_point)
+
+# appending the last interval 
+sorted_intervals.append([current_start_point, current_end_point])
+
+for interval in sorted_intervals:
+    print(str(interval[0]) + " " + str(interval[1]))
+```
+
+## Question 18 - Matrix Transposition
+```python
+number_of_inputs = int(input())
+matrix = []
+for i in range(number_of_inputs):
+    row = [int(c) for c in input().split(" ")]
+    matrix.append(row)
+
+transposed_matrix = []
+row_len = len(matrix[0])
+for i in range(row_len):
+    row = []
+    for j in range(number_of_inputs):
+        row.append(matrix[j][i])
+    transposed_matrix.append(row)
+
+for row in transposed_matrix:
+    row_str = ""
+    for element in row:
+        row_str += str(element) + " "
+    row_str = row_str[:-1] # remove the last space
+    print(row_str)
+```
+
+## Question 19 - Two Sum Finder
+```python
+arr = [int(c) for c in input().split(" ")]
+target = int(input())
+
+for i in range(len(arr)):
+    look_for = target - arr[i]
+    for j in range(i + 1, len(arr)):
+        if look_for == arr[j]:
+            print(f"{i} {j}")
+            break
+```
+
+## Question 20 - Find a Number in a Sequence
+```python
+import math
+N = float(input())
+def B(n):
+    return 1.5*n + 3*math.sin(6*math.sin(n))
+# The formula is B_n = 1.5n + 3sin(6sin(n))
+# Since the range of sine is -1 to 1, the range of 3sine is -3 to 3
+# and thus the value of B_n falls between 1.5n - 3 and 1.5n + 3
+# 
+# Notice that all real numbers fall in one of these ranges provided by B_n
+# Therefore, we can try to find all n that gives a B_n with a range that covers our N
+
+min_i = max(int((N - 3) / 1.5) - 20, 0)
+max_i = int((N + 3) / 1.5) + 20
+
+min_diff = 10
+best_i = 0
+for i in range(min_i, max_i):
+    cur_diff = abs(B(i) - N)
+    if (min_diff > cur_diff):
+        best_i = i
+        min_diff = cur_diff
+    
+print(best_i)
+```
