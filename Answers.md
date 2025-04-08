@@ -127,3 +127,77 @@ for char in message:
         
 print(encrypted_message)
 ```
+Ascii Code is how computers store letters. Learn more about it on 
+[Wikipedia](https://en.wikipedia.org/wiki/ASCII) 
+and [Ascii Code Table](https://www.ascii-code.com). In Python, we can use `ord` to get
+Ascii Code of a letter and `chr` to get a letter from the Ascii Code.
+
+## Question 7 - Is this a Prime Number?
+```python
+import math
+n = int(input())
+is_prime = True
+
+for i in range(2, int(math.sqrt(n)) + 1):
+    if (i != 2 and i % 2 == 0):
+        continue
+    if (n % i == 0):
+        print("false")
+        is_prime = False
+        break
+
+if (is_prime):
+    print("true")
+```
+
+## Question 8 - Balanced Parentheses Checker
+```
+brackets = input()
+stack = []
+is_wrong = False
+
+# Returns True if char is an opened bracket
+# Returns False if char is not an opened bracket
+def checkBracketType(char: str): 
+    return ((char == "{") or (char == "[") or (char == "("))
+
+# Returns if two bracket match, order matters
+def checkBracketMatch(char1: str, char2: str):
+    if (char1 == "{"): return char2 == "}"
+    if (char1 == "["): return char2 == "]"
+    if (char1 == "("): return char2 == ")"
+
+for char in brackets:
+    if (checkBracketType(char)):
+        stack.append(char)
+    else:
+        if (len(stack) == 0):
+            print("false")
+            is_wrong = True
+            break
+        poped_bracket = stack.pop()
+        if not checkBracketMatch(poped_bracket, char):
+            print("false")
+            is_wrong = True
+            break
+
+        
+if (not is_wrong):
+    if (len(stack) == 0):
+        print("true")
+    else:
+        print("false")
+```
+To solve this question, we have to introduce the notion of stack (yes, that is
+where *StackOverflow*'s name comes from). It is a data structure like a 
+bucket. You can put element only on the top of the stack (**push**) and you can only 
+retrieve element at the top of the stack (**pop**). 
+
+In python you can simulate a stack using a list, for instance:
+```python
+stack = []
+stack.append("a") # now "a" is pushed and it is on the top of the stack
+stack.append("b") # now "b" is pushed and it is on the top of the stack
+x = stack.pop() # now "b" is popped and the value "b" is removed from stack and is given to x
+# a is on the top of the stack
+```
